@@ -19,9 +19,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <nav className="border-b">
-          <div className="container mx-auto px-4 py-4">
+          <div className="container mx-auto px-3 md:px-4 py-3 md:py-4">
             <div className="flex items-center justify-between">
-              <Link href="/" className="text-xl font-bold">
+              <Link href="/" className="text-base md:text-xl font-bold">
                 Phone Agent Dashboard
               </Link>
             </div>

@@ -20,8 +20,8 @@ export function CallDetail({ call, transitions }: Props) {
   const mermaidDiagram = generateMermaidDiagram(transitions)
 
   return (
-    <div className="container mx-auto py-8 px-4 max-w-7xl">
-      <h1 className="text-3xl font-bold mb-6">Call Details</h1>
+    <div className="container mx-auto py-4 md:py-8 px-3 md:px-4 max-w-7xl">
+      <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">Call Details</h1>
 
       {/* Flow Chart */}
       <Card className="mb-6 border-2 border-black">

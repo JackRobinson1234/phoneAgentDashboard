@@ -60,41 +60,39 @@ export function CallsList() {
         return (
           <Link key={call.call_id} href={`/calls/${call.call_id}`}>
             <Card className="border-2 border-black hover:bg-gray-50 transition-colors cursor-pointer">
-              <CardContent className="p-0">
-                <div className="flex items-center justify-between gap-6 px-6 py-4">
+              <div className="flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-6 px-4 md:px-6 py-3 md:py-3.5">
                   {/* Left: Timestamp */}
-                  <div className="flex items-center gap-3 min-w-[250px]">
-                    <Clock className="w-5 h-5 text-black flex-shrink-0" />
-                    <p className="text-sm font-semibold">
+                  <div className="flex items-center gap-3 md:min-w-[250px]">
+                    <Clock className="w-4 h-4 md:w-5 md:h-5 text-black flex-shrink-0" />
+                    <p className="text-xs md:text-sm font-semibold">
                       {format(new Date(call.start_time), 'MMM d, yyyy h:mm a')}
                     </p>
                   </div>
 
                   {/* Right: Final Context */}
-                  <div className="flex-1 flex items-center justify-end">
+                  <div className="flex-1 flex items-center md:justify-end">
                     {contextBubbles.length > 0 ? (
-                      <div className="flex flex-wrap gap-2 justify-end items-center">
+                      <div className="flex flex-wrap gap-1.5 md:gap-2 md:justify-end items-center">
                         {contextBubbles.map(([key, value]) => (
                           <div 
                             key={key} 
-                            className="bg-white border border-black rounded-full px-3 py-1.5"
+                            className="bg-white border border-black rounded-full px-2 md:px-3 py-1 md:py-1.5"
                           >
-                            <span className="text-xs font-semibold">{key}:</span>
-                            <span className="text-xs ml-1">
+                            <span className="text-[10px] md:text-xs font-semibold">{key}:</span>
+                            <span className="text-[10px] md:text-xs ml-1">
                               {typeof value === 'object' 
-                                ? JSON.stringify(value).substring(0, 30) + (JSON.stringify(value).length > 30 ? '...' : '')
-                                : String(value).substring(0, 30) + (String(value).length > 30 ? '...' : '')
+                                ? JSON.stringify(value).substring(0, 20) + (JSON.stringify(value).length > 20 ? '...' : '')
+                                : String(value).substring(0, 20) + (String(value).length > 20 ? '...' : '')
                               }
                             </span>
                           </div>
                         ))}
                       </div>
                     ) : (
-                      <p className="text-sm text-gray-400">No context</p>
+                      <p className="text-xs md:text-sm text-gray-400">No context</p>
                     )}
                   </div>
                 </div>
-              </CardContent>
             </Card>
           </Link>
         )
