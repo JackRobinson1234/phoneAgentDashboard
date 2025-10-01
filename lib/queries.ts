@@ -31,6 +31,43 @@ export async function getCalls(
   return data as Call[]
 }
 
+export async function getCallsWithFinalContext(limit = 50) {
+  // Get calls
+  const { data: calls, error: callsError } = await supabase
+    .from('calls')
+    .select('*')
+    .order('start_time', { ascending: false })
+    .limit(limit)
+
+  if (callsError) throw callsError
+
+  // For each call, get the last state transition
+  const callsWithContext = await Promise.all(
+    (calls as Call[]).map(async (call) => {
+      const { data, error: transitionsError } = await supabase
+        .from('state_transitions')
+        .select('context_snapshot, context_updates')
+        .eq('call_id', call.call_id)
+        .order('sequence_number', { ascending: false })
+        .limit(1)
+
+      if (transitionsError) {
+        console.error('Error fetching transitions:', transitionsError)
+        return { ...call, finalContext: null }
+      }
+
+      const transitions = data as Pick<StateTransition, 'context_snapshot' | 'context_updates'>[]
+      const finalContext = transitions && transitions.length > 0 
+        ? { ...transitions[0].context_snapshot, ...transitions[0].context_updates }
+        : null
+
+      return { ...call, finalContext }
+    })
+  )
+
+  return callsWithContext
+}
+
 export async function getCallById(callId: string) {
   const { data: call, error: callError } = await supabase
     .from('calls')
