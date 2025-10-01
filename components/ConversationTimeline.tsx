@@ -45,11 +45,14 @@ export function ConversationTimeline({ transitions }: Props) {
               {transition.context_updates && Object.keys(transition.context_updates).length > 0 && (
                 <div className="mb-2">
                   <p className="text-sm font-semibold text-gray-600">Context Updated:</p>
-                  <div className="flex flex-wrap gap-1">
-                    {Object.keys(transition.context_updates).map(key => (
-                      <Badge key={key} variant="secondary" className="text-xs">
-                        {key}
-                      </Badge>
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    {Object.entries(transition.context_updates).map(([key, value]) => (
+                      <div key={key} className="bg-purple-50 border border-purple-200 rounded-lg px-3 py-1">
+                        <span className="text-xs font-semibold text-purple-700">{key}:</span>
+                        <span className="text-xs text-purple-900 ml-1">
+                          {typeof value === 'object' ? JSON.stringify(value) : String(value)}
+                        </span>
+                      </div>
                     ))}
                   </div>
                 </div>
