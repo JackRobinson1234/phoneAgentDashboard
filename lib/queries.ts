@@ -59,12 +59,14 @@ export async function getAnalytics(days = 7) {
   startDate.setDate(startDate.getDate() - days)
 
   // Get calls in date range
-  const { data: calls, error } = await supabase
+  const { data, error } = await supabase
     .from('calls')
     .select('*')
     .gte('start_time', startDate.toISOString())
 
   if (error) throw error
+  
+  const calls = data as Call[]
 
   // Calculate metrics
   const totalCalls = calls.length
@@ -88,9 +90,11 @@ export async function getStateTransitionStats() {
     .select('from_state, to_state, transition_type, processing_time_ms')
 
   if (error) throw error
+  
+  const stateTransitions = data as Pick<StateTransition, 'from_state' | 'to_state' | 'transition_type' | 'processing_time_ms'>[]
 
   // Group by transition
-  const transitions = data.reduce((acc, t) => {
+  const transitions = stateTransitions.reduce((acc, t) => {
     const key = `${t.from_state || 'START'} → ${t.to_state}`
     if (!acc[key]) {
       acc[key] = { count: 0, avgTime: 0, type: t.transition_type }
