@@ -1,10 +1,15 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { Call, StateTransition } from '@/lib/types'
-import { MermaidFlowChart } from './MermaidFlowChart'
 import { ConversationTimeline } from './ConversationTimeline'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { generateMermaidDiagram } from '@/lib/queries'
+
+const MermaidFlowChart = dynamic(
+  () => import('./MermaidFlowChart').then(mod => ({ default: mod.MermaidFlowChart })),
+  { ssr: false, loading: () => <div className="text-center py-4">Loading flow chart...</div> }
+)
 
 interface Props {
   call: Call

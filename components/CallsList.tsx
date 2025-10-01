@@ -45,7 +45,7 @@ export function CallsList() {
         return (
           <Link key={call.call_id} href={`/calls/${call.call_id}`}>
             <Card className="rounded-2xl hover:shadow-lg transition-shadow cursor-pointer">
-              <CardContent className="p-6">
+              <CardContent className="py-8 px-6">
                 <div className="space-y-4">
                   {/* Timestamp */}
                   <div className="flex items-center gap-3">
