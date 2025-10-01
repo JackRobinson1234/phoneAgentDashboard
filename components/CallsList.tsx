@@ -35,55 +35,49 @@ export function CallsList() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3">
       {calls.map((call) => {
         // Extract final context fields
         const contextBubbles = call.finalContext 
-          ? Object.entries(call.finalContext).slice(0, 8) // Show up to 8 context fields
+          ? Object.entries(call.finalContext).slice(0, 4) // Show up to 4 context fields
           : []
         
         return (
           <Link key={call.call_id} href={`/calls/${call.call_id}`}>
-            <Card className="rounded-2xl hover:shadow-lg transition-shadow cursor-pointer">
-              <CardContent className="py-8 px-6">
-                <div className="space-y-4">
-                  {/* Timestamp */}
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-blue-100 rounded-xl">
-                      <Clock className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Call Time</p>
-                      <p className="text-lg font-semibold">
-                        {format(new Date(call.start_time), 'MMM d, yyyy h:mm a')}
-                      </p>
-                    </div>
+            <Card className="border-2 border-black hover:bg-gray-50 transition-colors cursor-pointer">
+              <CardContent className="p-0">
+                <div className="flex items-center justify-between gap-6 px-6 py-4">
+                  {/* Left: Timestamp */}
+                  <div className="flex items-center gap-3 min-w-[250px]">
+                    <Clock className="w-5 h-5 text-black flex-shrink-0" />
+                    <p className="text-sm font-semibold">
+                      {format(new Date(call.start_time), 'MMM d, yyyy h:mm a')}
+                    </p>
                   </div>
 
-                  {/* Final Context Bubbles */}
-                  {contextBubbles.length > 0 ? (
-                    <div>
-                      <p className="text-sm text-muted-foreground mb-2">Final Context</p>
-                      <div className="flex flex-wrap gap-2">
+                  {/* Right: Final Context */}
+                  <div className="flex-1 flex items-center justify-end">
+                    {contextBubbles.length > 0 ? (
+                      <div className="flex flex-wrap gap-2 justify-end items-center">
                         {contextBubbles.map(([key, value]) => (
                           <div 
                             key={key} 
-                            className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-full px-4 py-2"
+                            className="bg-white border border-black rounded-full px-3 py-1.5"
                           >
-                            <span className="text-sm font-semibold text-blue-700">{key}:</span>
-                            <span className="text-sm text-blue-900 ml-1">
+                            <span className="text-xs font-semibold">{key}:</span>
+                            <span className="text-xs ml-1">
                               {typeof value === 'object' 
-                                ? JSON.stringify(value).substring(0, 40) + (JSON.stringify(value).length > 40 ? '...' : '')
-                                : String(value).substring(0, 40) + (String(value).length > 40 ? '...' : '')
+                                ? JSON.stringify(value).substring(0, 30) + (JSON.stringify(value).length > 30 ? '...' : '')
+                                : String(value).substring(0, 30) + (String(value).length > 30 ? '...' : '')
                               }
                             </span>
                           </div>
                         ))}
                       </div>
-                    </div>
-                  ) : (
-                    <p className="text-sm text-muted-foreground">No context available</p>
-                  )}
+                    ) : (
+                      <p className="text-sm text-gray-400">No context</p>
+                    )}
+                  </div>
                 </div>
               </CardContent>
             </Card>

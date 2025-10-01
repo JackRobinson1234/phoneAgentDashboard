@@ -24,7 +24,7 @@ export function CallDetail({ call, transitions }: Props) {
       <h1 className="text-3xl font-bold mb-6">Call Details</h1>
 
       {/* Flow Chart */}
-      <Card className="mb-8">
+      <Card className="mb-6 border-2 border-black">
         <CardHeader>
           <CardTitle>Conversation Flow</CardTitle>
         </CardHeader>
@@ -34,7 +34,7 @@ export function CallDetail({ call, transitions }: Props) {
       </Card>
 
       {/* Timeline */}
-      <Card>
+      <Card className="border-2 border-black">
         <CardHeader>
           <CardTitle>Conversation Timeline</CardTitle>
         </CardHeader>

@@ -10,7 +10,15 @@ export function CommonFlowsChart() {
   useEffect(() => {
     mermaid.initialize({ 
       startOnLoad: true,
-      theme: 'default',
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#ffffff',
+        primaryTextColor: '#000',
+        primaryBorderColor: '#000',
+        lineColor: '#000',
+        secondaryColor: '#f5f5f5',
+        tertiaryColor: '#e0e0e0'
+      },
       flowchart: {
         useMaxWidth: true,
         htmlLabels: true,
@@ -53,29 +61,29 @@ graph LR
     COMPLETE3 --> END
     COMPLETE4 --> END
     
-    style START fill:#e3f2fd
-    style GREETING fill:#fff3e0
-    style SURRENDER fill:#f3e5f5
-    style EMERGENCY fill:#ffebee
-    style FOUND fill:#e8f5e9
-    style LOST fill:#fff9c4
-    style SCHEDULE fill:#f3e5f5
-    style CONFIRM1 fill:#e1f5fe
-    style CONFIRM2 fill:#e1f5fe
-    style CONFIRM3 fill:#e1f5fe
-    style CONFIRM4 fill:#e1f5fe
-    style COMPLETE1 fill:#c8e6c9
-    style COMPLETE2 fill:#c8e6c9
-    style COMPLETE3 fill:#c8e6c9
-    style COMPLETE4 fill:#c8e6c9
-    style END fill:#e0e0e0
+    style START fill:#ffffff,stroke:#000,stroke-width:2px
+    style GREETING fill:#f5f5f5,stroke:#000,stroke-width:2px
+    style SURRENDER fill:#e0e0e0,stroke:#000,stroke-width:2px
+    style EMERGENCY fill:#e0e0e0,stroke:#000,stroke-width:2px
+    style FOUND fill:#e0e0e0,stroke:#000,stroke-width:2px
+    style LOST fill:#e0e0e0,stroke:#000,stroke-width:2px
+    style SCHEDULE fill:#d0d0d0,stroke:#000,stroke-width:2px
+    style CONFIRM1 fill:#c0c0c0,stroke:#000,stroke-width:2px
+    style CONFIRM2 fill:#c0c0c0,stroke:#000,stroke-width:2px
+    style CONFIRM3 fill:#c0c0c0,stroke:#000,stroke-width:2px
+    style CONFIRM4 fill:#c0c0c0,stroke:#000,stroke-width:2px
+    style COMPLETE1 fill:#a0a0a0,stroke:#000,stroke-width:2px,color:#fff
+    style COMPLETE2 fill:#a0a0a0,stroke:#000,stroke-width:2px,color:#fff
+    style COMPLETE3 fill:#a0a0a0,stroke:#000,stroke-width:2px,color:#fff
+    style COMPLETE4 fill:#a0a0a0,stroke:#000,stroke-width:2px,color:#fff
+    style END fill:#000,stroke:#000,stroke-width:2px,color:#fff
   `
 
   return (
-    <Card className="mb-8">
+    <Card className="border-2 border-black">
       <CardHeader>
         <CardTitle>Common Call Flows</CardTitle>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-gray-600">
           Most frequent conversation paths and data collected at each state
         </p>
       </CardHeader>
