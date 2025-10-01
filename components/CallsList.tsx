@@ -6,36 +6,51 @@ import { Call } from '@/lib/types'
 import { Card, CardContent } from '@/components/ui/card'
 import { format } from 'date-fns'
 import Link from 'next/link'
-import { Clock } from 'lucide-react'
+import { Clock, RefreshCw } from 'lucide-react'
 
 type CallWithContext = Call & { finalContext: Record<string, any> | null }
 
 export function CallsList() {
   const [calls, setCalls] = useState<CallWithContext[]>([])
   const [loading, setLoading] = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
+
+  const loadCalls = async () => {
+    try {
+      setRefreshing(true)
+      const data = await getCallsWithFinalContext(50)
+      setCalls(data)
+    } catch (error) {
+      console.error('Error loading calls:', error)
+    } finally {
+      setLoading(false)
+      setRefreshing(false)
+    }
+  }
 
   useEffect(() => {
-    async function loadCalls() {
-      try {
-        const data = await getCallsWithFinalContext(50)
-        setCalls(data)
-      } catch (error) {
-        console.error('Error loading calls:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
     loadCalls()
   }, [])
 
   if (loading) return <div className="text-center py-8">Loading calls...</div>
 
-  if (calls.length === 0) {
-    return <div className="text-center py-8 text-muted-foreground">No calls found</div>
-  }
-
   return (
-    <div className="flex flex-col gap-3">
+    <>
+      <div className="flex justify-end mb-3">
+        <button
+          onClick={loadCalls}
+          disabled={refreshing}
+          className="flex items-center gap-2 px-3 py-1.5 border-2 border-black hover:bg-gray-100 transition-colors disabled:opacity-50 text-sm font-semibold"
+        >
+          <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+          Refresh
+        </button>
+      </div>
+
+      {calls.length === 0 ? (
+        <div className="text-center py-8 text-muted-foreground">No calls found</div>
+      ) : (
+        <div className="flex flex-col gap-3">
       {calls.map((call) => {
         // Extract final context fields
         const contextBubbles = call.finalContext 
@@ -84,6 +99,8 @@ export function CallsList() {
           </Link>
         )
       })}
-    </div>
+        </div>
+      )}
+    </>
   )
 }

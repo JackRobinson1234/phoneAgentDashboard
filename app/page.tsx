@@ -32,7 +32,9 @@ export default function Home() {
         </div>
       )}
 
-      <h2 className="text-2xl font-bold mb-4">Recent Calls</h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-2xl font-bold">Recent Calls</h2>
+      </div>
       <Suspense fallback={<div className="text-center py-8">Loading calls...</div>}>
         <CallsList />
       </Suspense>
