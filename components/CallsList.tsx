@@ -3,10 +3,10 @@
 import { useEffect, useState } from 'react'
 import { getCalls } from '@/lib/queries'
 import { Call } from '@/lib/types'
-import { Badge } from '@/components/ui/badge'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { formatDistanceToNow } from 'date-fns'
+import { Card, CardContent } from '@/components/ui/card'
+import { format } from 'date-fns'
 import Link from 'next/link'
+import { Phone, Clock, Target } from 'lucide-react'
 
 export function CallsList() {
   const [calls, setCalls] = useState<Call[]>([])
@@ -33,50 +33,60 @@ export function CallsList() {
   }
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Session ID</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Duration</TableHead>
-          <TableHead>States</TableHead>
-          <TableHead>Tokens</TableHead>
-          <TableHead>Time</TableHead>
-          <TableHead>Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {calls.map((call) => (
-          <TableRow key={call.call_id}>
-            <TableCell className="font-mono text-sm">
-              {call.session_id.substring(0, 8)}...
-            </TableCell>
-            <TableCell>
-              <Badge variant={
-                call.completion_status === 'completed' ? 'success' :
-                call.completion_status === 'error' ? 'destructive' :
-                'secondary'
-              }>
-                {call.completion_status}
-              </Badge>
-            </TableCell>
-            <TableCell>{call.duration_seconds}s</TableCell>
-            <TableCell>{call.total_states_visited}</TableCell>
-            <TableCell>{call.total_tokens_used?.toLocaleString()}</TableCell>
-            <TableCell>
-              {formatDistanceToNow(new Date(call.start_time), { addSuffix: true })}
-            </TableCell>
-            <TableCell>
-              <Link 
-                href={`/calls/${call.call_id}`}
-                className="text-blue-600 hover:underline"
-              >
-                View Details
-              </Link>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <div className="flex flex-col gap-4">
+      {calls.map((call) => {
+        // Extract detected_intent from context_snapshot if available
+        const detectedIntent = call.context_snapshot?.detected_intent || 'Not detected'
+        
+        return (
+          <Link key={call.call_id} href={`/calls/${call.call_id}`}>
+            <Card className="rounded-2xl hover:shadow-lg transition-shadow cursor-pointer">
+              <CardContent className="p-6">
+                <div className="flex flex-col md:flex-row md:items-center gap-6">
+                  {/* Phone Number */}
+                  <div className="flex items-center gap-3 flex-1">
+                    <div className="p-2 bg-blue-100 rounded-xl">
+                      <Phone className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Phone Number</p>
+                      <p className="text-lg font-semibold">
+                        {call.user_phone || 'Unknown'}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Timestamp */}
+                  <div className="flex items-center gap-3 flex-1">
+                    <div className="p-2 bg-green-100 rounded-xl">
+                      <Clock className="w-5 h-5 text-green-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Time</p>
+                      <p className="text-lg font-semibold">
+                        {format(new Date(call.start_time), 'MMM d, yyyy h:mm a')}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Detected Intent */}
+                  <div className="flex items-center gap-3 flex-1">
+                    <div className="p-2 bg-purple-100 rounded-xl">
+                      <Target className="w-5 h-5 text-purple-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Intent</p>
+                      <p className="text-lg font-semibold capitalize">
+                        {detectedIntent}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+        )
+      })}
+    </div>
   )
 }

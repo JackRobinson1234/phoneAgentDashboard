@@ -11,6 +11,7 @@ export interface Call {
   total_states_visited: number
   total_llm_calls: number
   total_tokens_used: number
+  context_snapshot?: Record<string, any>
   created_at: string
 }
 
