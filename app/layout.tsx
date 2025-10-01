@@ -22,16 +22,8 @@ export default function RootLayout({
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <Link href="/" className="text-xl font-bold">
-                Phone Agent Analytics
+                Phone Agent Dashboard
               </Link>
-              <div className="flex gap-6">
-                <Link href="/" className="hover:text-blue-600">
-                  Calls
-                </Link>
-                <Link href="/analytics" className="hover:text-blue-600">
-                  Analytics
-                </Link>
-              </div>
             </div>
           </div>
         </nav>
